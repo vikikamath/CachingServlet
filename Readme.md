@@ -1,6 +1,8 @@
+#Caching Servlet 
+
 ## Requirements
 
-This emerged out of a question I posted on [StackOverflow | http://stackoverflow.com/questions/42522611/how-can-tomcat-server-cache-a-post-request]
+Answering my own question on [StackOverflow](http://stackoverflow.com/questions/42522611/how-can-tomcat-server-cache-a-post-request)
 
 - Create a Java Server Example that caches POST Response and responds to GET with identical URL
 
@@ -11,26 +13,28 @@ This emerged out of a question I posted on [StackOverflow | http://stackoverflow
 - Use Maven so that it can be run with IDE.
 
 
-This was more of an idea I wanted to tinker around. Do not do this in Production Environment. Any suggestions welcome!
+This was more of an idea I wanted to tinker around. **Do not do this in Production Environment**. Any suggestions welcome!
 
 
 ## Flow
 
-GET /  ==> Landing Page
-Landing Page ==> POST /hello/abc  with {{data}} ==>  Cache POST data and Respond with {{data}}
+| Request Method | URI | Process / Result|
+|----------------|-----|-----------------|
+| GET            |/hello| Landing Page|
+|POST            |/hello/abc with `{JSON: data}`| Cache Request UI -> `{JSON: data}`|
+|GET(in another Tab)| /hello/abc| Respond with Cached Data: `{JSON: data}`|
 
-... in another browser instance (or tab)
 
-GET /hello/abc ==> Respond with Cached {{data}}
+> Server Shutdown : Write all accumulated cache to Java Properties File
 
-... Server Shutdown : Write all accumulated cache to Java Properties File
-
-... Server Startup : Read Properties file into HashMap to serve requests.
+> Server Startup : Read Properties file into HashMap to serve requests.
 
 
 
 ## Clean Install and Run
 
-!! Must have Maven installed !!
+> Prerequisite: Maven Installation
 
-`git clone <<repoName>> && cd <<repoName>> && mvn install tomcat7:run`
+```shell
+git clone <<repoName>> && cd <<repoName>> && mvn install tomcat7:run
+```
